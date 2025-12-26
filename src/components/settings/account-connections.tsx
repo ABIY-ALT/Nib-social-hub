@@ -8,13 +8,27 @@ import { Facebook, Instagram, Linkedin, Twitter, Youtube, CheckCircle, XCircle }
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { cn } from '@/lib/utils';
+import { initializeFirebase } from '@/firebase';
+import { 
+  signInWithPopup, 
+  FacebookAuthProvider, 
+  TwitterAuthProvider,
+  OAuthProvider, 
+  signOut,
+  onAuthStateChanged,
+  User
+} from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import React from 'react';
+
+const { auth } = initializeFirebase();
 
 const initialAccounts: SocialAccount[] = [
-  { id: '1', platform: 'Facebook', username: 'BankSocial Page', avatarUrl: 'https://picsum.photos/seed/fb/40/40', isConnected: true },
-  { id: '2', platform: 'X', username: '@BankSocialAI', avatarUrl: 'https://picsum.photos/seed/x/40/40', isConnected: true },
-  { id: '3', platform: 'Instagram', username: '@banksocial.ai', avatarUrl: 'https://picsum.photos/seed/ig/40/40', isConnected: false },
-  { id: '4', platform: 'LinkedIn', username: 'BankSocialAI Inc.', avatarUrl: 'https://picsum.photos/seed/li/40/40', isConnected: true },
-  { id: '5', platform: 'YouTube', username: 'BankSocialAI Channel', avatarUrl: 'https://picsum.photos/seed/yt/40/40', isConnected: false },
+  { id: '1', platform: 'Facebook', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/fb/40/40', isConnected: false },
+  { id: '2', platform: 'X', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/x/40/40', isConnected: false },
+  { id: '3', platform: 'Instagram', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/ig/40/40', isConnected: false },
+  { id: '4', platform: 'LinkedIn', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/li/40/40', isConnected: false },
+  { id: '5', platform: 'YouTube', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/yt/40/40', isConnected: false },
 ];
 
 const platformIcons = {
@@ -25,11 +39,75 @@ const platformIcons = {
   YouTube: Youtube,
 };
 
+const platformProviders = {
+    Facebook: new FacebookAuthProvider(),
+    X: new TwitterAuthProvider(),
+    LinkedIn: new OAuthProvider('linkedin.com'),
+    // Instagram and YouTube would be handled differently, often via their parent company APIs (Facebook/Google)
+    Instagram: null,
+    YouTube: null,
+};
+
 export default function AccountConnections() {
     const [accounts, setAccounts] = useState(initialAccounts);
+    const [user, setUser] = useState<User | null>(null);
+    const { toast } = useToast();
 
-    const toggleConnection = (id: string) => {
-        setAccounts(accounts.map(acc => acc.id === id ? { ...acc, isConnected: !acc.isConnected } : acc));
+    React.useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            if (currentUser) {
+                // Update account states based on provider data
+                setAccounts(prevAccounts => prevAccounts.map(acc => {
+                    const providerData = currentUser.providerData.find(pd => 
+                        pd.providerId.includes(acc.platform.toLowerCase())
+                    );
+                    if (providerData) {
+                        return {
+                            ...acc,
+                            isConnected: true,
+                            username: providerData.displayName || acc.username,
+                            avatarUrl: providerData.photoURL || acc.avatarUrl
+                        };
+                    }
+                    return acc;
+                }));
+            } else {
+                // Reset all to not connected
+                setAccounts(initialAccounts);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const handleConnect = async (platform: SocialPlatform) => {
+        const provider = platformProviders[platform];
+        if (!provider || !auth) {
+            toast({ title: "Connection not available", description: `We do not support connecting with ${platform} at this time.`, variant: "destructive" });
+            return;
+        }
+
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const credential = OAuthProvider.credentialFromResult(result);
+            // You can now access the OAuth token if needed
+            // const token = credential?.accessToken;
+            toast({ title: "Success!", description: `Connected to ${platform}.` });
+        } catch (error: any) {
+            console.error(error);
+            toast({ title: "Connection Failed", description: error.message, variant: "destructive" });
+        }
+    };
+
+    const handleDisconnect = async () => {
+        if (!auth) return;
+        try {
+            await signOut(auth);
+            toast({ title: "Disconnected", description: "You have been disconnected from all accounts." });
+        } catch (error: any) {
+            console.error(error);
+            toast({ title: "Error", description: "Could not disconnect.", variant: "destructive" });
+        }
     };
 
   return (
@@ -41,6 +119,8 @@ export default function AccountConnections() {
       <CardContent className="space-y-4">
         {accounts.map(account => {
             const Icon = platformIcons[account.platform];
+            const isSupported = !!platformProviders[account.platform];
+
             return (
                 <div key={account.id} className="flex items-center justify-between p-3 rounded-lg border">
                     <div className='flex items-center gap-4'>
@@ -59,12 +139,21 @@ export default function AccountConnections() {
                             {account.isConnected ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
                             <span>{account.isConnected ? "Connected" : "Not Connected"}</span>
                         </div>
-                        <Button 
-                            variant={account.isConnected ? 'destructive' : 'default'}
-                            onClick={() => toggleConnection(account.id)}
-                        >
-                            {account.isConnected ? 'Disconnect' : 'Connect'}
-                        </Button>
+                        {account.isConnected ? (
+                             <Button 
+                                variant='destructive'
+                                onClick={handleDisconnect}
+                            >
+                                Disconnect
+                            </Button>
+                        ) : (
+                            <Button 
+                                onClick={() => handleConnect(account.platform)}
+                                disabled={!isSupported}
+                            >
+                                Connect
+                            </Button>
+                        )}
                     </div>
                 </div>
             )

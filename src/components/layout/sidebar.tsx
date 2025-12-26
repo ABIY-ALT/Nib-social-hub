@@ -69,7 +69,7 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              isActive={pathname.startsWith(settingsLink.href)}
+              isActive={pathname.startsWith(settingsLink.href) && pathname !== '/settings'}
               tooltip={settingsLink.label}
             >
               <Link href={settingsLink.href}>
