@@ -14,11 +14,11 @@ export default function SettingsPage() {
           </p>
         </div>
 
-        <Tabs defaultValue="accounts" className="flex flex-col md:flex-row gap-8">
+        <Tabs defaultValue="connections" className="flex flex-col md:flex-row gap-8">
             <TabsList className="flex flex-row md:flex-col h-auto md:h-full justify-start bg-transparent p-0 w-full md:w-48">
-                <TabsTrigger value="accounts" className="justify-start w-full">
+                <TabsTrigger value="connections" className="justify-start w-full">
                     <Users className="mr-2 h-4 w-4" />
-                    Accounts
+                    Connections
                 </TabsTrigger>
                 <TabsTrigger value="profile" className="justify-start w-full">
                     <UserCircle className="mr-2 h-4 w-4" />
@@ -31,7 +31,7 @@ export default function SettingsPage() {
             </TabsList>
 
             <div className="flex-1">
-                <TabsContent value="accounts">
+                <TabsContent value="connections">
                     <AccountConnections />
                 </TabsContent>
                 <TabsContent value="profile">

@@ -7,6 +7,7 @@ import {
   CalendarDays,
   BarChart3,
   Settings,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -26,6 +27,7 @@ const links = [
   { href: '/composer', label: 'Composer', icon: PenSquare },
   { href: '/calendar', label: 'Calendar', icon: CalendarDays },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/settings', label: 'Connections', icon: Users },
 ];
 
 const settingsLink = { href: '/settings', label: 'Settings', icon: Settings };
@@ -50,7 +52,7 @@ export default function AppSidebar() {
             <SidebarMenuItem key={link.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname.startsWith(link.href)}
+                isActive={pathname.startsWith(link.href) && (link.href !== '/settings' || pathname === '/settings')}
                 tooltip={link.label}
               >
                 <Link href={link.href}>
