@@ -4,9 +4,9 @@ export default function CalendarPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-3xl font-bold font-headline">Content Calendar</h1>
+        <h1 className="text-3xl font-bold font-headline">Content Planner</h1>
         <p className="text-muted-foreground">
-          View, manage, and organize your scheduled posts.
+          Plan, schedule, and organize your social media content.
         </p>
       </div>
 

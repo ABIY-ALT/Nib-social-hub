@@ -22,10 +22,12 @@ export type Mention = {
   sentiment: "positive" | "negative" | "neutral";
 };
 
+export type PostStatus = "draft" | "pending" | "scheduled" | "approved" | "published";
+
 export type ScheduledPost = {
   id: string;
   platform: SocialPlatform;
   content: string;
   scheduledAt: Date;
-  status: "scheduled" | "published";
+  status: PostStatus;
 };
