@@ -33,7 +33,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/accounts', label: 'Social Accounts', icon: Users },
-  { href: '/calendar', label: 'Content Planner', icon: CalendarDays },
+  { href: '/planner', label: 'Content Planner', icon: CalendarDays },
   { href: '/composer', label: 'Post Composer', icon: PenSquare },
   { href: '/inbox', label: 'Inbox', icon: Inbox, badge: '12' },
   { href: '/mentions', label: 'Mentions & Listening', icon: AtSign },
