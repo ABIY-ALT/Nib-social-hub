@@ -1,6 +1,6 @@
 import CalendarView from "@/components/calendar/calendar-view";
 
-export default function CalendarPage() {
+export default function PlannerPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
