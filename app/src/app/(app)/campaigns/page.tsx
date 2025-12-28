@@ -1,3 +1,4 @@
+import CampaignsList from "@/components/campaigns/campaigns-list";
 
 export default function CampaignsPage() {
   return (
@@ -8,9 +9,7 @@ export default function CampaignsPage() {
           Manage and track your marketing campaigns.
         </p>
       </div>
-      <div className="border-2 border-dashed rounded-lg p-12 text-center">
-        <p className="text-muted-foreground">Content for Campaigns will go here.</p>
-      </div>
+      <CampaignsList />
     </div>
   );
 }

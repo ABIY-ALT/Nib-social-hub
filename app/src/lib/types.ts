@@ -50,3 +50,15 @@ export type Conversation = {
     timestamp: string;
   }[];
 };
+
+export type CampaignStatus = "active" | "planned" | "completed" | "paused";
+
+export type Campaign = {
+  id: string;
+  name: string;
+  status: CampaignStatus;
+  startDate: Date;
+  endDate: Date;
+  engagement: number;
+  reach: number;
+};
