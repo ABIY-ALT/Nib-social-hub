@@ -1,4 +1,5 @@
-import AccountConnections from "@/components/settings/account-connections";
+
+import AccountConnections from "@/components/accounts/account-connections";
 import NotificationSettings from "@/components/settings/notification-settings";
 import ProfileSettings from "@/components/settings/profile-settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
