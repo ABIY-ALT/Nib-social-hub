@@ -1,13 +1,18 @@
 'use client';
 
 import {
-  Bot,
   LayoutDashboard,
-  PenSquare,
-  CalendarDays,
-  BarChart3,
-  Settings,
   Users,
+  CalendarDays,
+  PenSquare,
+  Inbox,
+  AtSign,
+  BarChart3,
+  Target,
+  UserCheck,
+  FolderKanban,
+  Settings,
+  Bot,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -18,23 +23,37 @@ import {
   SidebarMenuButton,
   SidebarContent,
   SidebarFooter,
+  SidebarMenuBadge,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/composer', label: 'Composer', icon: PenSquare },
-  { href: '/calendar', label: 'Calendar', icon: CalendarDays },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/settings', label: 'Connections', icon: Users },
+  { href: '/accounts', label: 'Social Accounts', icon: Users },
+  { href: '/planner', label: 'Content Planner', icon: CalendarDays },
+  { href: '/composer', label: 'Post Composer', icon: PenSquare },
+  { href: '/inbox', label: 'Inbox', icon: Inbox, badge: '12' },
+  { href: '/mentions', label: 'Mentions & Listening', icon: AtSign },
+  { href: '/analytics', label: 'Analytics & Reports', icon: BarChart3 },
+  { href: '/campaigns', label: 'Campaigns', icon: Target },
+  { href: '/team', label: 'Team & Approvals', icon: UserCheck },
+  { href: '/library', label: 'Media Library', icon: FolderKanban },
 ];
 
 const settingsLink = { href: '/settings', label: 'Settings', icon: Settings };
 const userAvatar = PlaceHolderImages.find(img => img.id === 'user1');
 
+// Mock user role
+const userRole = 'Admin'; 
+
 export default function AppSidebar() {
   const pathname = usePathname();
+
+  const isVisible = (item: any) => {
+    if (!item.roles) return true;
+    return item.roles.includes(userRole);
+  }
 
   return (
     <>
@@ -43,21 +62,22 @@ export default function AppSidebar() {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Bot className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-semibold font-headline text-primary">BankSocialAI</h1>
+          <h1 className="text-xl font-semibold font-headline text-primary">Social Hub</h1>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
         <SidebarMenu>
-          {links.map((link) => (
+          {links.filter(isVisible).map((link) => (
             <SidebarMenuItem key={link.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname.startsWith(link.href) && (link.href !== '/settings' || pathname === '/settings')}
+                isActive={pathname.startsWith(link.href)}
                 tooltip={link.label}
               >
                 <Link href={link.href}>
                   <link.icon />
                   <span>{link.label}</span>
+                  {link.badge && <SidebarMenuBadge>{link.badge}</SidebarMenuBadge>}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -69,7 +89,7 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              isActive={pathname.startsWith(settingsLink.href) && pathname !== '/settings'}
+              isActive={pathname.startsWith(settingsLink.href)}
               tooltip={settingsLink.label}
             >
               <Link href={settingsLink.href}>
@@ -87,7 +107,7 @@ export default function AppSidebar() {
                 </Avatar>
                 <div className="flex flex-col text-left">
                   <span className="text-sm font-medium">Jane Doe</span>
-                  <span className="text-xs text-muted-foreground">jane.doe@bank.com</span>
+                  <span className="text-xs text-muted-foreground">jane.doe@example.com</span>
                 </div>
               </Link>
             </SidebarMenuButton>

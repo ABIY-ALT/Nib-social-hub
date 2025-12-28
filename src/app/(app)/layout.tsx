@@ -5,8 +5,8 @@ import FirebaseClientProvider from '@/firebase/client-provider';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'BankSocialAI Dashboard',
-  description: 'AI-Powered Social Media Management for Banks',
+  title: 'Social Hub Dashboard',
+  description: 'AI-Powered Social Media Management',
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
