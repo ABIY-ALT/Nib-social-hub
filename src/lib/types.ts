@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 
-export type SocialPlatform = "Facebook" | "X" | "Instagram" | "LinkedIn" | "YouTube";
+export type SocialPlatform = "Facebook" | "X" | "Instagram" | "LinkedIn" | "YouTube" | "TikTok";
 
 export type SocialAccount = {
   id: string;
@@ -8,6 +8,7 @@ export type SocialAccount = {
   username: string;
   avatarUrl: string;
   isConnected: boolean;
+  permissions: string[];
 };
 
 export type Mention = {
