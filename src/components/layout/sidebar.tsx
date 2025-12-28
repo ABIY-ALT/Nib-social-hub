@@ -13,6 +13,8 @@ import {
   FolderKanban,
   Settings,
   Bot,
+  Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -35,6 +37,8 @@ const links = [
   { href: '/composer', label: 'Post Composer', icon: PenSquare },
   { href: '/inbox', label: 'Inbox', icon: Inbox, badge: '12' },
   { href: '/mentions', label: 'Mentions & Listening', icon: AtSign },
+  { href: '/ai-creator', label: 'AI Content Creator', icon: Sparkles },
+  { href: '/ai-risk-check', label: 'AI Content Risk Check', icon: ShieldCheck },
   { href: '/analytics', label: 'Analytics & Reports', icon: BarChart3 },
   { href: '/campaigns', label: 'Campaigns', icon: Target },
   { href: '/team', label: 'Team & Approvals', icon: UserCheck },
