@@ -24,8 +24,7 @@ const platformInfo: Record<SocialPlatform, { icon: React.ElementType, color: str
   Instagram: { icon: Instagram, color: 'text-pink-500' },
   LinkedIn: { icon: Linkedin, color: 'text-sky-700' },
   YouTube: { icon: Youtube, color: 'text-red-600' },
-  TikTok: { icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="M16.33 6.64a4.34 4.34 0 0 1-4.24-5.32 4.31 4.31 0 0 1 4.24 5.32zM10.15 5.7c.23.23.44.47.63.72l.2.24c.2.27.4.55.58.85a4.31 4.31 0 0 1-5.87 5.56l-.18-.18a4.34 4.34 0 0 1 4.64-6.95z"></path><path d="M12 12.28c.1.18.2.37.3.57l.15.36c.14.4.28.8.44 1.2a4.32 4.32 0 0 1-4.9 4.9l-.26-.1c-.3-.12-.6-.25-.88-.4a4.34 4.34 0 0
- 1 4.15-7.53z"></path><path d="M12 12.28a4.32 4.32 0 0 0 4.9-4.9l.18.18a4.34 4.34 0 0 0-4.64 6.95z"></path></svg>, color: 'text-foreground' },
+  TikTok: { icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="M16.33 6.64a4.34 4.34 0 0 1-4.24-5.32 4.31 4.31 0 0 1 4.24 5.32zM10.15 5.7c.23.23.44.47.63.72l.2.24c.2.27.4.55.58.85a4.31 4.31 0 0 1-5.87 5.56l-.18-.18a4.34 4.34 0 0 1 4.64-6.95z"></path><path d="M12 12.28c.1.18.2.37.3.57l.15.36c.14.4.28.8.44 1.2a4.32 4.32 0 0 1-4.9 4.9l-.26-.1c-.3-.12-.6-.25-.88-.4a4.34 4.34 0 0 1 4.15-7.53z"></path><path d="M12 12.28a4.32 4.32 0 0 0 4.9-4.9l.18.18a4.34 4.34 0 0 0-4.64 6.95z"></path></svg>, color: 'text-foreground' },
 };
 
 export default function AccountConnections() {
