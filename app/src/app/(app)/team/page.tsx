@@ -1,3 +1,6 @@
+import ApprovalWorkflowCard from "@/components/team/approval-workflow-card";
+import PendingApprovalsQueue from "@/components/team/pending-approvals-queue";
+import TeamMembersCard from "@/components/team/team-members-card";
 
 export default function TeamPage() {
   return (
@@ -8,8 +11,15 @@ export default function TeamPage() {
           Manage team members, roles, and approval workflows.
         </p>
       </div>
-      <div className="border-2 border-dashed rounded-lg p-12 text-center">
-        <p className="text-muted-foreground">Content for Team & Approvals will go here.</p>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+            <PendingApprovalsQueue />
+        </div>
+        <div className="lg:col-span-1 space-y-8">
+            <TeamMembersCard />
+            <ApprovalWorkflowCard />
+        </div>
       </div>
     </div>
   );
