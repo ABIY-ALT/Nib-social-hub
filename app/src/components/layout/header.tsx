@@ -20,10 +20,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 // A mock hook for theme switching
 const useTheme = () => {
@@ -49,32 +49,17 @@ const useTheme = () => {
 };
 
 export default function AppHeader() {
-  const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
-
-  const getPageTitle = () => {
-    if (pathname === '/') return 'Dashboard';
-    const segment = pathname.split('/').pop() || 'dashboard';
-    return segment.charAt(0).toUpperCase() + segment.slice(1);
-  };
-
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user1');
 
-
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
-      <div className="md:hidden">
-        <SidebarTrigger />
-      </div>
-
-      <h1 className="hidden text-xl font-semibold md:block">{getPageTitle()}</h1>
-      
+    <header className={cn("sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white dark:bg-gray-800 px-4 sm:px-6 dark:border-gray-700")}>
       <div className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
           placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
+          className="w-full rounded-lg bg-gray-100 dark:bg-gray-700 pl-8 md:w-[200px] lg:w-[320px]"
         />
       </div>
 

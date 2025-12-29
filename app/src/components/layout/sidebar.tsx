@@ -1,116 +1,140 @@
-'use client';
+"use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   LayoutDashboard,
-  Users,
-  CalendarDays,
+  Share2,
+  Calendar,
   PenSquare,
-  AtSign,
-  BarChart3,
-  Target,
-  Settings,
+  Inbox,
+  Radio,
   Bot,
-} from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import {
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarContent,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+  ShieldAlert,
+  BarChart3,
+  Megaphone,
+  Users,
+  Image,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
-const links = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/accounts', label: 'Social Accounts', icon: Users },
-  { href: '/planner', label: 'Content Planner', icon: CalendarDays },
-  { href: '/composer', label: 'Post Composer', icon: PenSquare },
-  { href: '/mentions', label: 'Mentions & Listening', icon: AtSign },
-  { href: '/analytics', label: 'Analytics & Reports', icon: BarChart3 },
-  { href: '/campaigns', label: 'Campaigns', icon: Target },
+const menu = [
+  { name: "Dashboard", path: "/", icon: LayoutDashboard },
+  { name: "Social Accounts", path: "/social-accounts", icon: Share2 },
+  { name: "Content Planner", path: "/content-planner", icon: Calendar },
+  { name: "Post Composer", path: "/post-composer", icon: PenSquare },
+  {
+    name: "Inbox",
+    path: "/inbox",
+    icon: Inbox,
+    badge: 5,
+  },
+  {
+    name: "Mentions & Listening",
+    path: "/listening",
+    icon: Radio,
+  },
+
+  { section: "AI FEATURES" },
+
+  {
+    name: "AI Content Creator",
+    path: "/ai-content",
+    icon: Bot,
+  },
+  {
+    name: "AI Content Risk Check",
+    path: "/ai-risk",
+    icon: ShieldAlert,
+    badge: 2,
+  },
+
+  { section: "INSIGHTS" },
+
+  { name: "Analytics & Reports", path: "/analytics", icon: BarChart3 },
+  { name: "Campaigns", path: "/campaigns", icon: Megaphone },
+  { name: "Team & Approvals", path: "/team", icon: Users },
+  { name: "Media Library", path: "/media", icon: Image },
+  { name: "Settings", path: "/settings", icon: Settings },
 ];
-
-const settingsLink = { href: '/settings', label: 'Settings', icon: Settings };
-const userAvatar = PlaceHolderImages.find(img => img.id === 'user1');
-
-// Mock user role
-const userRole = 'Admin'; 
 
 export default function AppSidebar() {
   const pathname = usePathname();
-
-  const isVisible = (item: any) => {
-    if (!item.roles) return true;
-    return item.roles.includes(userRole);
-  }
-
-  const checkActive = (href: string) => {
-    if (href === '/dashboard' && pathname === '/') return true;
-    return pathname.startsWith(href) && href !== '/';
-  };
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <>
-      <SidebarHeader>
-        <div className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Bot className="h-6 w-6" />
-          </div>
-          <h1 className="text-xl font-semibold font-headline text-primary">Social Hub</h1>
-        </div>
-      </SidebarHeader>
-      <SidebarContent className="p-2">
-        <SidebarMenu>
-          {links.filter(isVisible).map((link) => (
-            <SidebarMenuItem key={link.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={checkActive(link.href)}
-                tooltip={link.label}
-              >
-                <Link href={link.href}>
-                  <link.icon />
-                  <span>{link.label}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname.startsWith(settingsLink.href)}
-              tooltip={settingsLink.label}
-            >
-              <Link href={settingsLink.href}>
-                <settingsLink.icon />
-                <span>{settingsLink.label}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild size="lg" tooltip="Profile">
-              <Link href="/settings">
-                <Avatar className="size-8">
-                  {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="User Avatar" data-ai-hint={userAvatar.imageHint} />}
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col text-left">
-                  <span className="text-sm font-medium">Jane Doe</span>
-                  <span className="text-xs text-muted-foreground">jane.doe@example.com</span>
+    <aside
+      className={`
+        ${collapsed ? "w-20" : "w-64"}
+       bg-white dark:bg-gray-800 border-r dark:border-gray-700 min-h-screen transition-all duration-300
+      `}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+        {!collapsed && (
+          <span className="text-lg font-bold text-gray-800 dark:text-white">Social Hub</span>
+        )}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
+        >
+          {collapsed ? <ChevronRight /> : <ChevronLeft />}
+        </button>
+      </div>
+
+      {/* Menu */}
+      <nav className="p-3 space-y-1">
+        {menu.map((item, index) => {
+          if ("section" in item && item.section) {
+            return (
+              !collapsed && (
+                <div
+                  key={index}
+                  className="mt-4 mb-2 px-3 text-xs font-semibold text-gray-400 uppercase"
+                >
+                  {item.section}
                 </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-    </>
+              )
+            );
+          }
+          
+          if(!("path" in item)) return null;
+
+          const Icon = item.icon;
+          const active = pathname === item.path;
+
+          return (
+            <Link
+              key={item.path}
+              href={item.path}
+              title={collapsed ? item.name : ""}
+              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm
+                ${
+                  active
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }
+                ${collapsed ? "justify-center" : ""}
+              `}
+            >
+              <Icon size={18} />
+              {!collapsed && (
+                <>
+                  <span className="flex-1">{item.name}</span>
+                  {item.badge && (
+                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
   );
 }
