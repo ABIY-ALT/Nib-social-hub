@@ -1,4 +1,4 @@
-import MediaLibrary from "@/components/library/media-library";
+import MediaLibrary from "../../../components/library/media-library";
 
 export default function LibraryPage() {
   return (

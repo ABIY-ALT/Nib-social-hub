@@ -156,7 +156,7 @@ export default function RiskChecker() {
                                             <div className="flex gap-4">
                                                 {result.categories.map(cat => (
                                                     <div key={cat.name} className="flex items-center gap-2 text-sm">
-                                                        <cat.level === 'Low' ? CheckCircle className="h-4 w-4 text-green-500" : cat.level === 'Medium' ? AlertTriangle className="h-4 w-4 text-amber-500" : <ShieldX className="h-4 w-4 text-red-500" />
+                                                        {cat.level === 'Low' ? <CheckCircle className="h-4 w-4 text-green-500" /> : cat.level === 'Medium' ? <AlertTriangle className="h-4 w-4 text-amber-500" /> : <ShieldX className="h-4 w-4 text-red-500" />}
                                                         <span>{cat.name}: <span className="font-semibold">{cat.level}</span></span>
                                                     </div>
                                                 ))}

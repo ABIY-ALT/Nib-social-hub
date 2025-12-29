@@ -1,6 +1,6 @@
-import ApprovalWorkflowCard from "@/components/team/approval-workflow-card";
-import PendingApprovalsQueue from "@/components/team/pending-approvals-queue";
-import TeamMembersCard from "@/components/team/team-members-card";
+import ApprovalWorkflowCard from "../../../components/team/approval-workflow-card";
+import PendingApprovalsQueue from "../../../components/team/pending-approvals-queue";
+import TeamMembersCard from "../../../components/team/team-members-card";
 
 export default function TeamPage() {
   return (

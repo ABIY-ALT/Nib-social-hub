@@ -1,4 +1,4 @@
-import AiCreatorForm from "@/components/ai-creator/ai-creator-form";
+import AiCreatorForm from "../../../components/ai-creator/ai-creator-form";
 
 export default function AiCreatorPage() {
   return (

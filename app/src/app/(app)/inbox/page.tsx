@@ -1,4 +1,4 @@
-import InboxLayout from "@/components/inbox/inbox-layout";
+import InboxLayout from "../../../components/inbox/inbox-layout";
 
 export default function InboxPage() {
   return (

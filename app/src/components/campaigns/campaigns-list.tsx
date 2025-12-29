@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import type { Campaign } from "@/lib/types";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const mockCampaigns: Campaign[] = [
     { id: '1', name: 'Q2 Student Savings Drive', status: 'active', startDate: new Date('2024-04-01'), endDate: new Date('2024-06-30'), engagement: 12500, reach: 350000 },

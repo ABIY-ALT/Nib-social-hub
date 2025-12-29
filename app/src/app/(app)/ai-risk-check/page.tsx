@@ -1,4 +1,4 @@
-import RiskChecker from "@/components/ai-risk-check/risk-checker";
+import RiskChecker from "../../../components/ai-risk-check/risk-checker";
 
 export default function AiRiskCheckPage() {
   return (
