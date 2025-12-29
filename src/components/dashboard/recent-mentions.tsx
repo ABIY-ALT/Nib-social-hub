@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import type { Mention } from "@/lib/types";
+import type { Mention, SocialPlatform } from "@/lib/types";
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -59,12 +59,13 @@ const mentions: Mention[] = [
   },
 ];
 
-const platformIcons = {
+const platformIcons: Record<SocialPlatform, React.ReactElement> = {
   Facebook: <Facebook className="h-4 w-4 text-blue-600" />,
   X: <Twitter className="h-4 w-4" />,
   Instagram: <Instagram className="h-4 w-4 text-pink-500" />,
   LinkedIn: <Linkedin className="h-4 w-4 text-sky-700" />,
   YouTube: <Youtube className="h-4 w-4 text-red-600" />,
+  TikTok: <></>,
 };
 
 const sentimentColors = {

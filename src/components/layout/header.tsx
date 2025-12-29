@@ -53,8 +53,8 @@ export default function AppHeader() {
 
   const getPageTitle = () => {
     const segment = pathname.split('/').pop();
-    if (!segment) return 'Dashboard';
-    return segment.charAt(0).toUpperCase() + segment.slice(1);
+    if (!segment || segment === 'dashboard') return 'Dashboard';
+    return segment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user1');

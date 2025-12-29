@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 
-const platformIcons = {
+const platformIcons: Record<Exclude<SocialPlatform, 'TikTok' >, React.ElementType> = {
   Facebook: Facebook,
   X: Twitter,
   Instagram: Instagram,
@@ -20,7 +20,7 @@ const platformIcons = {
   YouTube: Youtube,
 };
 
-const platforms: SocialPlatform[] = ["Facebook", "X", "Instagram", "LinkedIn"];
+const platforms: Exclude<SocialPlatform, 'TikTok' >[] = ["Facebook", "X", "Instagram", "LinkedIn"];
 
 export default function PostEditor() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatform[]>([]);
