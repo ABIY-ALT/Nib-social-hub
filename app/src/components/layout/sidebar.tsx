@@ -62,7 +62,7 @@ export default function AppSidebar() {
   const checkActive = (href: string) => {
     // This logic handles the root path correctly
     if (href === '/dashboard') {
-      return pathname === '/' || pathname === '/dashboard';
+      return pathname === '/dashboard';
     }
     return pathname.startsWith(href);
   };

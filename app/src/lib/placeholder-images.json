@@ -35,30 +35,6 @@
       "description": "Sample post image",
       "imageUrl": "https://images.unsplash.com/photo-1606836591695-4d58a73eba1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxidXNpbmVzcyUyMG9mZmljZXxlbnwwfHx8fDE3NjY3MTgwMzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "business office"
-    },
-    {
-      "id": "media1",
-      "description": "Media library image 1",
-      "imageUrl": "https://picsum.photos/seed/media1/400/400",
-      "imageHint": "business event"
-    },
-    {
-      "id": "media2",
-      "description": "Media library image 2",
-      "imageUrl": "https://picsum.photos/seed/media2/400/400",
-      "imageHint": "mobile phone"
-    },
-    {
-      "id": "media3",
-      "description": "Media library image 3 (video thumb)",
-      "imageUrl": "https://picsum.photos/seed/media3/400/400",
-      "imageHint": "person talking"
-    },
-    {
-      "id": "media4",
-      "description": "Media library image 4",
-      "imageUrl": "https://picsum.photos/seed/media4/400/400",
-      "imageHint": "webinar presentation"
     }
   ]
 }
