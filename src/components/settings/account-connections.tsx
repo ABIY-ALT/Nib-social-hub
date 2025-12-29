@@ -1,163 +1,103 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { SocialAccount } from "@/lib/types";
-import { Facebook, Instagram, Linkedin, Twitter, Youtube, CheckCircle, XCircle } from "lucide-react";
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
-import { cn } from '@/lib/utils';
-import { initializeFirebase } from '@/firebase';
-import { 
-  signInWithPopup, 
-  FacebookAuthProvider, 
-  TwitterAuthProvider,
-  OAuthProvider, 
-  signOut,
-  onAuthStateChanged,
-  User
-} from 'firebase/auth';
-import { useToast } from '@/hooks/use-toast';
-import React from 'react';
+import type { SocialAccount, SocialPlatform } from "@/lib/types";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube, CheckCircle, XCircle, PlusCircle } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
-const { auth } = initializeFirebase();
-
-const initialAccounts: SocialAccount[] = [
-  { id: '1', platform: 'Facebook', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/fb/40/40', isConnected: false },
-  { id: '2', platform: 'X', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/x/40/40', isConnected: false },
-  { id: '3', platform: 'Instagram', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/ig/40/40', isConnected: false },
-  { id: '4', platform: 'LinkedIn', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/li/40/40', isConnected: false },
-  { id: '5', platform: 'YouTube', username: 'Not Connected', avatarUrl: 'https://picsum.photos/seed/yt/40/40', isConnected: false },
+const mockAccounts: SocialAccount[] = [
+  { id: '1', platform: 'Facebook', username: 'BankSocial Page', avatarUrl: 'https://picsum.photos/seed/fb/40/40', isConnected: true, permissions: ['Posting', 'Analytics', 'Inbox'] },
+  { id: '2', platform: 'X', username: '@BankSocialAI', avatarUrl: 'https://picsum.photos/seed/x/40/40', isConnected: true, permissions: ['Posting', 'Analytics'] },
+  { id: '3', platform: 'Instagram', username: '@banksocial', avatarUrl: 'https://picsum.photos/seed/ig/40/40', isConnected: true, permissions: ['Posting', 'Analytics'] },
+  { id: '4', platform: 'LinkedIn', username: 'BankSocial Inc.', avatarUrl: 'https://picsum.photos/seed/li/40/40', isConnected: true, permissions: ['Posting', 'Analytics'] },
+  { id: '5', platform: 'TikTok', username: 'Not Connected', avatarUrl: '', isConnected: false, permissions: [] },
+  { id: '6', platform: 'YouTube', username: 'Not Connected', avatarUrl: '', isConnected: false, permissions: [] },
 ];
 
-const platformIcons = {
-  Facebook: Facebook,
-  X: Twitter,
-  Instagram: Instagram,
-  LinkedIn: Linkedin,
-  YouTube: Youtube,
-};
-
-const platformProviders = {
-    Facebook: new FacebookAuthProvider(),
-    X: new TwitterAuthProvider(),
-    LinkedIn: new OAuthProvider('linkedin.com'),
-    // Instagram and YouTube would be handled differently, often via their parent company APIs (Facebook/Google)
-    Instagram: null,
-    YouTube: null,
+const platformInfo: Record<SocialPlatform, { icon: React.ElementType, color: string }> = {
+  Facebook: { icon: Facebook, color: 'text-blue-600' },
+  X: { icon: Twitter, color: 'text-foreground' },
+  Instagram: { icon: Instagram, color: 'text-pink-500' },
+  LinkedIn: { icon: Linkedin, color: 'text-sky-700' },
+  YouTube: { icon: Youtube, color: 'text-red-600' },
+  TikTok: { icon: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="M16.33 6.64a4.34 4.34 0 0 1-4.24-5.32 4.31 4.31 0 0 1 4.24 5.32zM10.15 5.7c.23.23.44.47.63.72l.2.24c.2.27.4.55.58.85a4.31 4.31 0 0 1-5.87 5.56l-.18-.18a4.34 4.34 0 0 1 4.64-6.95z"></path><path d="M12 12.28c.1.18.2.37.3.57l.15.36c.14.4.28.8.44 1.2a4.32 4.32 0 0 1-4.9 4.9l-.26-.1c-.3-.12-.6-.25-.88-.4a4.34 4.34 0 0 1 4.15-7.53z"></path><path d="M12 12.28a4.32 4.32 0 0 0 4.9-4.9l.18.18a4.34 4.34 0 0 0-4.64 6.95z"></path></svg>, color: 'text-foreground' },
 };
 
 export default function AccountConnections() {
-    const [accounts, setAccounts] = useState(initialAccounts);
-    const [user, setUser] = useState<User | null>(null);
-    const { toast } = useToast();
-
-    React.useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            if (currentUser) {
-                // Update account states based on provider data
-                setAccounts(prevAccounts => prevAccounts.map(acc => {
-                    const providerData = currentUser.providerData.find(pd => 
-                        pd.providerId.includes(acc.platform.toLowerCase())
-                    );
-                    if (providerData) {
-                        return {
-                            ...acc,
-                            isConnected: true,
-                            username: providerData.displayName || acc.username,
-                            avatarUrl: providerData.photoURL || acc.avatarUrl
-                        };
-                    }
-                    return acc;
-                }));
-            } else {
-                // Reset all to not connected
-                setAccounts(initialAccounts);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const handleConnect = async (platform: SocialPlatform) => {
-        const provider = platformProviders[platform];
-        if (!provider || !auth) {
-            toast({ title: "Connection not available", description: `We do not support connecting with ${platform} at this time.`, variant: "destructive" });
-            return;
-        }
-
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const credential = OAuthProvider.credentialFromResult(result);
-            // You can now access the OAuth token if needed
-            // const token = credential?.accessToken;
-            toast({ title: "Success!", description: `Connected to ${platform}.` });
-        } catch (error: any) {
-            console.error(error);
-            toast({ title: "Connection Failed", description: error.message, variant: "destructive" });
-        }
-    };
-
-    const handleDisconnect = async () => {
-        if (!auth) return;
-        try {
-            await signOut(auth);
-            toast({ title: "Disconnected", description: "You have been disconnected from all accounts." });
-        } catch (error: any) {
-            console.error(error);
-            toast({ title: "Error", description: "Could not disconnect.", variant: "destructive" });
-        }
-    };
-
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-headline">Account Connections</CardTitle>
         <CardDescription>Securely connect and manage your bank's social media accounts.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {accounts.map(account => {
-            const Icon = platformIcons[account.platform];
-            const isSupported = !!platformProviders[account.platform];
-
-            return (
-                <div key={account.id} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className='flex items-center gap-4'>
-                        <Icon className="h-8 w-8 text-muted-foreground" />
-                        <Avatar>
-                            <AvatarImage src={account.avatarUrl} data-ai-hint="logo" />
-                            <AvatarFallback>{account.platform.slice(0,2)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <p className="font-semibold">{account.platform}</p>
-                            <p className="text-sm text-muted-foreground">{account.username}</p>
-                        </div>
-                    </div>
-                    <div className='flex items-center gap-4'>
-                        <div className={cn("flex items-center gap-2 text-sm", account.isConnected ? "text-green-600" : "text-amber-500")}>
-                            {account.isConnected ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-                            <span>{account.isConnected ? "Connected" : "Not Connected"}</span>
-                        </div>
-                        {account.isConnected ? (
-                             <Button 
-                                variant='destructive'
-                                onClick={handleDisconnect}
-                            >
-                                Disconnect
-                            </Button>
-                        ) : (
-                            <Button 
-                                onClick={() => handleConnect(account.platform)}
-                                disabled={!isSupported}
-                            >
-                                Connect
-                            </Button>
-                        )}
-                    </div>
-                </div>
-            )
-        })}
+      <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {mockAccounts.map(account => {
+                  const Info = platformInfo[account.platform];
+                  return (
+                      <Card key={account.id} className="flex flex-col">
+                          <CardHeader className="flex flex-row items-center gap-4">
+                              <Info.icon className={cn("h-8 w-8", Info.color)} />
+                              <div>
+                                  <CardTitle className="font-headline text-xl">{account.platform}</CardTitle>
+                                  <CardDescription>
+                                      {account.isConnected ? "Manage connection" : "Connect new account"}
+                                  </CardDescription>
+                              </div>
+                          </CardHeader>
+                          <CardContent className="flex-grow">
+                              {account.isConnected ? (
+                                  <div className="space-y-4">
+                                      <div className="flex items-center gap-4 p-3 rounded-lg bg-muted/50">
+                                          <Avatar className="h-10 w-10 border">
+                                              <AvatarImage src={account.avatarUrl} data-ai-hint="logo" />
+                                              <AvatarFallback>{account.platform.slice(0,2)}</AvatarFallback>
+                                          </Avatar>
+                                          <div className="flex-grow">
+                                              <p className="font-semibold">{account.username}</p>
+                                              <div className="flex items-center gap-2 text-xs text-green-600">
+                                                  <CheckCircle className="h-3 w-3" />
+                                                  <span>Connected</span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div>
+                                          <h4 className="text-sm font-medium mb-2">Permissions</h4>
+                                          <div className="flex flex-wrap gap-2">
+                                              {account.permissions.map(perm => (
+                                                  <Badge key={perm} variant="secondary">{perm}</Badge>
+                                              ))}
+                                          </div>
+                                      </div>
+                                  </div>
+                              ) : (
+                                  <div className="flex flex-col items-center justify-center text-center p-6 h-full rounded-lg border-2 border-dashed">
+                                      <XCircle className="h-10 w-10 text-muted-foreground mb-2" />
+                                      <p className="font-medium">Not Connected</p>
+                                      <p className="text-sm text-muted-foreground">Click below to connect your account.</p>
+                                  </div>
+                              )}
+                          </CardContent>
+                          <CardFooter className="flex justify-between">
+                              {account.isConnected ? (
+                                  <>
+                                      <Button variant="outline">Manage</Button>
+                                      <Button variant="destructive">Disconnect</Button>
+                                  </>
+                              ) : (
+                                  <Button className="w-full">
+                                      <PlusCircle className="mr-2 h-4 w-4" />
+                                      Connect {account.platform}
+                                  </Button>
+                              )}
+                          </CardFooter>
+                      </Card>
+                  )
+              })}
+          </div>
       </CardContent>
     </Card>
   );
