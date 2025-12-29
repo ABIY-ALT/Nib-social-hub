@@ -1,4 +1,4 @@
-import AccountConnections from "@/components/accounts/account-connections";
+import AccountConnections from "@/components/settings/account-connections";
 
 export default function AccountsPage() {
   return (
