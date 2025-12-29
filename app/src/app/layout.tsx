@@ -3,6 +3,9 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import FirebaseClientProvider from '@/firebase/client-provider';
+import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
+import AppSidebar from '@/components/layout/sidebar';
+import AppHeader from '@/components/layout/header';
 
 export const metadata: Metadata = {
   title: 'Social Hub',
@@ -27,7 +30,17 @@ export default function RootLayout({
         )}
       >
         <FirebaseClientProvider>
-          {children}
+          <SidebarProvider>
+            <Sidebar>
+              <AppSidebar />
+            </Sidebar>
+            <SidebarInset>
+              <AppHeader />
+              <main className="p-4 sm:p-6 lg:p-8">
+                {children}
+              </main>
+            </SidebarInset>
+          </SidebarProvider>
         </FirebaseClientProvider>
         <Toaster />
       </body>

@@ -35,14 +35,9 @@ const links = [
   { href: '/accounts', label: 'Social Accounts', icon: Users },
   { href: '/planner', label: 'Content Planner', icon: CalendarDays },
   { href: '/composer', label: 'Post Composer', icon: PenSquare },
-  { href: '/inbox', label: 'Inbox', icon: Inbox, badge: '12' },
   { href: '/mentions', label: 'Mentions & Listening', icon: AtSign },
-  { href: '/ai-creator', label: 'AI Content Creator', icon: Sparkles },
-  { href: '/ai-risk-check', label: 'AI Content Risk Check', icon: ShieldCheck },
   { href: '/analytics', label: 'Analytics & Reports', icon: BarChart3 },
   { href: '/campaigns', label: 'Campaigns', icon: Target },
-  { href: '/team', label: 'Team & Approvals', icon: UserCheck },
-  { href: '/library', label: 'Media Library', icon: FolderKanban },
 ];
 
 const settingsLink = { href: '/settings', label: 'Settings', icon: Settings };
@@ -60,10 +55,7 @@ export default function AppSidebar() {
   }
 
   const checkActive = (href: string) => {
-    // This logic handles the root path correctly
-    if (href === '/dashboard') {
-      return pathname === '/dashboard';
-    }
+    if (href === '/dashboard' && pathname === '/') return true;
     return pathname.startsWith(href);
   };
 
