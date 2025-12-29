@@ -1,12 +1,8 @@
-import AppHeader from '@/components/layout/header';
-import AppSidebar from '@/components/layout/sidebar';
-import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
-import FirebaseClientProvider from '@/firebase/client-provider';
-import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
-
+import type { Metadata } from 'next';
+import AppLayout from './(app)/layout';
 
 export const metadata: Metadata = {
   title: 'Social Hub Dashboard',
@@ -23,19 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
-        <FirebaseClientProvider>
-          <SidebarProvider>
-            <Sidebar>
-              <AppSidebar />
-            </Sidebar>
-            <SidebarInset>
-              <AppHeader />
-              <main className="p-4 sm:p-6 lg:p-8">
-                {children}
-              </main>
-            </SidebarInset>
-          </SidebarProvider>
-        </FirebaseClientProvider>
+        {children}
         <Toaster />
       </body>
     </html>
