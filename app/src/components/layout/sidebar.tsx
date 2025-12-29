@@ -60,9 +60,12 @@ export default function AppSidebar() {
   }
 
   const checkActive = (href: string) => {
-    if (href === '/dashboard') return pathname === '/' || pathname === '/dashboard';
+    // This logic handles the root path correctly
+    if (href === '/dashboard') {
+      return pathname === '/' || pathname === '/dashboard';
+    }
     return pathname.startsWith(href);
-  }
+  };
 
   return (
     <>
@@ -71,7 +74,7 @@ export default function AppSidebar() {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Bot className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-semibold text-primary">BankSocialAI</h1>
+          <h1 className="text-xl font-semibold font-headline text-primary">Social Hub</h1>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
