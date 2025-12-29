@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { Campaign, CampaignStatus } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { TrendingUp, PlusCircle } from "lucide-react";
+import type { Campaign, CampaignStatus } from "@/lib/types";
 
 const mockCampaigns: Campaign[] = [
   { id: '1', name: 'Spring Savings Account Push', status: 'active', startDate: new Date('2024-05-01'), endDate: new Date('2024-06-30'), engagement: 12500, reach: 540000 },

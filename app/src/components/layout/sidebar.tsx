@@ -5,16 +5,11 @@ import {
   Users,
   CalendarDays,
   PenSquare,
-  Inbox,
   AtSign,
   BarChart3,
   Target,
-  UserCheck,
-  FolderKanban,
   Settings,
   Bot,
-  Sparkles,
-  ShieldCheck,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,7 +20,6 @@ import {
   SidebarMenuButton,
   SidebarContent,
   SidebarFooter,
-  SidebarMenuBadge,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -56,7 +50,7 @@ export default function AppSidebar() {
 
   const checkActive = (href: string) => {
     if (href === '/dashboard' && pathname === '/') return true;
-    return pathname.startsWith(href);
+    return pathname.startsWith(href) && href !== '/';
   };
 
   return (
@@ -81,7 +75,6 @@ export default function AppSidebar() {
                 <Link href={link.href}>
                   <link.icon />
                   <span>{link.label}</span>
-                  {link.badge && <SidebarMenuBadge>{link.badge}</SidebarMenuBadge>}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
