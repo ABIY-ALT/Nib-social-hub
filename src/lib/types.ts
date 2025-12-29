@@ -1,5 +1,3 @@
-import type { LucideIcon } from "lucide-react";
-
 export type SocialPlatform = "Facebook" | "X" | "Instagram" | "LinkedIn" | "YouTube" | "TikTok";
 
 export type SocialAccount = {
@@ -30,4 +28,35 @@ export type ScheduledPost = {
   content: string;
   scheduledAt: Date;
   status: PostStatus;
+};
+
+export type Conversation = {
+  id: string;
+  platform: SocialPlatform;
+  type: 'message' | 'comment';
+  author: string;
+  authorHandle: string;
+  avatarUrl: string;
+  timestamp: string;
+  content: string;
+  isRead: boolean;
+  sentiment: "positive" | "negative" | "neutral";
+  replies: {
+    author: string;
+    avatarUrl: string;
+    content: string;
+    timestamp: string;
+  }[];
+};
+
+export type CampaignStatus = "active" | "planned" | "completed" | "paused";
+
+export type Campaign = {
+  id: string;
+  name: string;
+  status: CampaignStatus;
+  startDate: Date;
+  endDate: Date;
+  engagement: number;
+  reach: number;
 };

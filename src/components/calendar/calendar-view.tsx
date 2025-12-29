@@ -19,13 +19,11 @@ const mockPosts: ScheduledPost[] = [
   { id: '7', platform: 'LinkedIn', content: "Article about fintech trends...", scheduledAt: new Date(new Date().setDate(new Date().getDate() + 5)), status: 'scheduled' },
 ];
 
-const platformInfo: Record<SocialPlatform, { icon: React.ElementType, color: string }> = {
+const platformInfo: Record<Exclude<SocialPlatform, 'YouTube' | 'TikTok'>, { icon: React.ElementType, color: string }> = {
   Facebook: { icon: Facebook, color: 'text-blue-600' },
   X: { icon: Twitter, color: 'text-foreground' },
   Instagram: { icon: Instagram, color: 'text-pink-500' },
   LinkedIn: { icon: Linkedin, color: 'text-sky-700' },
-  YouTube: { icon: Facebook, color: 'text-red-600' },
-  TikTok: { icon: () => <div></div>, color: '' },
 };
 
 const statusInfo = {
@@ -73,6 +71,7 @@ export default function CalendarView() {
                     {dailyPosts.length > 0 && (
                       <div className="absolute bottom-2 left-0 right-0 flex justify-center items-center gap-1">
                         {dailyPosts.slice(0, 3).map(post => {
+                           if (post.platform === 'YouTube' || post.platform === 'TikTok') return null;
                            const pInfo = platformInfo[post.platform];
                            return <div key={post.id} className={cn("h-1.5 w-1.5 rounded-full", pInfo.color.replace('text-', 'bg-'))}></div>
                         })}
@@ -95,6 +94,7 @@ export default function CalendarView() {
             {postsForSelectedDay.length > 0 ? (
               <ul className='space-y-3'>
                 {postsForSelectedDay.map(post => {
+                  if (post.platform === 'YouTube' || post.platform === 'TikTok') return null;
                   const pInfo = platformInfo[post.platform];
                   const sInfo = statusInfo[post.status];
                   return (
